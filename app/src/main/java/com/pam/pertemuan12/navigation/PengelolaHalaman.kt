@@ -28,7 +28,7 @@ import com.pam.pertemuan12.view.buku.DestinasiBukuDetail
 import com.pam.pertemuan12.view.buku.DestinasiBukuHome
 import com.pam.pertemuan12.view.buku.DestinasiBukuInsert
 import com.pam.pertemuan12.view.buku.DestinasiBukuUpdate
-import com.pam.pertemuan12.view.buku.DetailView
+import com.pam.pertemuan12.view.buku.DetailBukuView
 import com.pam.pertemuan12.view.buku.EntryMhsScreen
 import com.pam.pertemuan12.view.buku.HomeScreen
 import com.pam.pertemuan12.view.buku.UpdateView
@@ -53,6 +53,7 @@ fun PengelolaHalaman(navController: NavHostController = rememberNavController())
         // Home Splash
         composable(DestinasiSplash.route) {
             HomeView(
+                onHomeClick = { },
                 onAnggotaClick = {
                     navController.navigate(DestinasiAnggotaHome.route)
                 },
@@ -75,6 +76,11 @@ fun PengelolaHalaman(navController: NavHostController = rememberNavController())
                 onDetailClick = { id_pengembalian ->
                     navController.navigate("${DestinasiPengembalianDetail.route}/$id_pengembalian")
                 },
+                onHomeClick = { navController.navigate(DestinasiSplash.route) },
+                onAnggotaClick = { navController.navigate(DestinasiAnggotaHome.route) },
+                onBukuClick = { navController.navigate(DestinasiBukuHome.route) },
+                onPeminjamanClick = { navController.navigate(DestinasiPeminjamanHome.route) },
+                onPengembalianClick = { },
                 navigateBack = { navController.popBackStack() },
             )
         }
@@ -105,6 +111,11 @@ fun PengelolaHalaman(navController: NavHostController = rememberNavController())
                         }
                     }
                 },
+                onHomeClick = { navController.navigate(DestinasiSplash.route) },
+                onAnggotaClick = { navController.navigate(DestinasiAnggotaHome.route) },
+                onBukuClick = { navController.navigate(DestinasiBukuHome.route) },
+                onPeminjamanClick = { navController.navigate(DestinasiPeminjamanHome.route) },
+                onPengembalianClick = { },
                 onClick = {
                     navController.navigate("${DestinasiPengembalianUpdate.route}/$id_pengembalian")
                 }
@@ -136,6 +147,11 @@ fun PengelolaHalaman(navController: NavHostController = rememberNavController())
                 onDetailClick = { id_peminjaman ->
                     navController.navigate("${DestinasiPeminjamanDetail.route}/$id_peminjaman")
                 },
+                onHomeClick = { navController.navigate(DestinasiSplash.route) },
+                onAnggotaClick = { navController.navigate(DestinasiAnggotaHome.route) },
+                onBukuClick = { navController.navigate(DestinasiBukuHome.route) },
+                onPeminjamanClick = { },
+                onPengembalianClick = { navController.navigate(DestinasiPengembalianHome.route) },
                 navigateBack = { navController.popBackStack() },
             )
         }
@@ -166,6 +182,11 @@ fun PengelolaHalaman(navController: NavHostController = rememberNavController())
                         }
                     }
                 },
+                onHomeClick = { navController.navigate(DestinasiSplash.route) },
+                onAnggotaClick = { navController.navigate(DestinasiAnggotaHome.route) },
+                onBukuClick = { navController.navigate(DestinasiBukuHome.route) },
+                onPeminjamanClick = { },
+                onPengembalianClick = { navController.navigate(DestinasiPengembalianHome.route) },
                 onClick = {
                     navController.navigate("${DestinasiPeminjamanUpdate.route}/$id_peminjaman")
                 }
@@ -190,14 +211,18 @@ fun PengelolaHalaman(navController: NavHostController = rememberNavController())
             )
         }
 
-        // Home Anggota Screen
         composable(DestinasiAnggotaHome.route) {
             HomeAnggotaScreen(
                 navigateToltemEntry = { navController.navigate(DestinasiAnggotaInsert.route) },
                 onDetailClick = { id_anggota ->
                     navController.navigate("${DestinasiAnggotaDetail.route}/$id_anggota")
                 },
-                navigateBack = { navController.popBackStack() },
+                onHomeClick = { navController.navigate(DestinasiSplash.route) },
+                onAnggotaClick = { },
+                onBukuClick = { navController.navigate(DestinasiBukuHome.route) },
+                onPeminjamanClick = { navController.navigate(DestinasiPeminjamanHome.route) },
+                onPengembalianClick = { navController.navigate(DestinasiPengembalianHome.route) },
+                navigateBack = { navController.popBackStack() }
             )
         }
 
@@ -229,7 +254,12 @@ fun PengelolaHalaman(navController: NavHostController = rememberNavController())
                 },
                 onClick = {
                     navController.navigate("${DestinasiAnggotaUpdate.route}/$id_anggota")
-                }
+                },
+                onHomeClick = { navController.navigate(DestinasiSplash.route) },
+                onAnggotaClick = { },
+                onBukuClick = { navController.navigate(DestinasiBukuHome.route) },
+                onPeminjamanClick = { navController.navigate(DestinasiPeminjamanHome.route) },
+                onPengembalianClick = { navController.navigate(DestinasiPengembalianHome.route) },
             )
         }
 
@@ -258,6 +288,11 @@ fun PengelolaHalaman(navController: NavHostController = rememberNavController())
                 onDetailClick = { id_buku ->
                     navController.navigate("${DestinasiBukuDetail.route}/$id_buku")
                 },
+                onHomeClick = { navController.navigate(DestinasiSplash.route) },
+                onAnggotaClick = { navController.navigate(DestinasiAnggotaHome.route) },
+                onBukuClick = { },
+                onPeminjamanClick = { navController.navigate(DestinasiPeminjamanHome.route) },
+                onPengembalianClick = { navController.navigate(DestinasiPengembalianHome.route) },
                 navigateBack = { navController.popBackStack() },
             )
         }
@@ -279,7 +314,7 @@ fun PengelolaHalaman(navController: NavHostController = rememberNavController())
             arguments = listOf(navArgument("id_buku") { type = NavType.StringType })
         ) { backStackEntry ->
             val id_buku = backStackEntry.arguments?.getString("id_buku") ?: ""
-            DetailView(
+            DetailBukuView(
                 id_buku = id_buku,
                 navigateBack = {
                     navController.navigate(DestinasiBukuHome.route) {
@@ -288,6 +323,11 @@ fun PengelolaHalaman(navController: NavHostController = rememberNavController())
                         }
                     }
                 },
+                onHomeClick = { navController.navigate(DestinasiSplash.route) },
+                onAnggotaClick = { navController.navigate(DestinasiAnggotaHome.route) },
+                onBukuClick = { },
+                onPeminjamanClick = { navController.navigate(DestinasiPeminjamanHome.route) },
+                onPengembalianClick = { navController.navigate(DestinasiPengembalianHome.route) },
                 onClick = {
                     navController.navigate("${DestinasiBukuUpdate.route}/$id_buku")
                 }
