@@ -29,6 +29,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.pam.pertemuan12.costumwidget.FooterMenu
 import com.pam.pertemuan12.customwidget.TopAppBar
 import com.pam.pertemuan12.model.Anggota
 import com.pam.pertemuan12.navigation.DestinasiNavigasi
@@ -45,6 +46,11 @@ object DestinasiAnggotaDetail : DestinasiNavigasi {
 @Composable
 fun DetailAnggotaView(
     id_anggota: String,
+    onHomeClick: () -> Unit,
+    onAnggotaClick: () -> Unit,
+    onBukuClick: () -> Unit,
+    onPeminjamanClick: () -> Unit,
+    onPengembalianClick: () -> Unit,
     navigateBack: () -> Unit,
     onClick: () -> Unit,
     viewModel: DetailAnggotaViewModel = viewModel(factory = PenyediaAnggotaViewModel.Factory)
@@ -76,6 +82,15 @@ fun DetailAnggotaView(
                 Icon(imageVector = Icons.Default.Edit, contentDescription = "Edit Anggota")
             }
         },
+        bottomBar = {
+            FooterMenu(
+                onAnggotaClick = onAnggotaClick,
+                onBukuClick = onBukuClick,
+                onHomeClick = onHomeClick,
+                onPeminjamanClick = onPeminjamanClick,
+                onPengembalianClick = onPengembalianClick
+            )
+        }
     ) { innerPadding ->
         when (uiState) {
             is DetailAnggotaUiState.Loading -> {
