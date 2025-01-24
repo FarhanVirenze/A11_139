@@ -18,6 +18,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.pam.pertemuan12.costumwidget.FooterMenu
 import com.pam.pertemuan12.customwidget.TopAppBar
 import com.pam.pertemuan12.model.Anggota
 import com.pam.pertemuan12.navigation.DestinasiNavigasi
@@ -31,11 +32,15 @@ object DestinasiAnggotaHome : DestinasiNavigasi {
     override val route = "anggota_home"
     override val titleRes = "Daftar Anggota"
 }
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeAnggotaScreen(
     navigateToltemEntry: () -> Unit,
+    onHomeClick: () -> Unit,
+    onAnggotaClick: () -> Unit,
+    onBukuClick: () -> Unit,
+    onPeminjamanClick: () -> Unit,
+    onPengembalianClick: () -> Unit,
     modifier: Modifier = Modifier,
     navigateBack: () -> Unit,
     onDetailClick: (String) -> Unit = {},
@@ -66,6 +71,15 @@ fun HomeAnggotaScreen(
                 Icon(imageVector = Icons.Default.Add, contentDescription = "Add Anggota")
             }
         },
+        bottomBar = {
+            FooterMenu(
+                onAnggotaClick = onAnggotaClick,
+                onBukuClick = onBukuClick,
+                onHomeClick = onHomeClick,
+                onPeminjamanClick = onPeminjamanClick,
+                onPengembalianClick = onPengembalianClick
+            )
+        }
     ) { innerPadding ->
         Column(modifier = Modifier.padding(innerPadding)) {
             SearchBar(
