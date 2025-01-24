@@ -25,6 +25,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.pam.pertemuan12.R
+import com.pam.pertemuan12.costumwidget.FooterMenu
 import com.pam.pertemuan12.customwidget.TopAppBar
 import com.pam.pertemuan12.model.Peminjaman
 import com.pam.pertemuan12.model.Pengembalian
@@ -45,6 +46,11 @@ object DestinasiPeminjamanHome : DestinasiNavigasi {
 @Composable
 fun HomePeminjamanScreen(
     navigateToltemEntry: () -> Unit,
+    onHomeClick: () -> Unit,
+    onAnggotaClick: () -> Unit,
+    onBukuClick: () -> Unit,
+    onPeminjamanClick: () -> Unit,
+    onPengembalianClick: () -> Unit,
     modifier: Modifier = Modifier,
     navigateBack: () -> Unit,
     onDetailClick: (String) -> Unit = {},
@@ -80,6 +86,15 @@ fun HomePeminjamanScreen(
                 Icon(imageVector = Icons.Default.Add, contentDescription = "Add Peminjaman")
             }
         },
+        bottomBar = {
+            FooterMenu(
+                onAnggotaClick = onAnggotaClick,
+                onBukuClick = onBukuClick,
+                onHomeClick = onHomeClick,
+                onPeminjamanClick = onPeminjamanClick,
+                onPengembalianClick = onPengembalianClick
+            )
+        }
     ) { innerPadding ->
         when {
             pengembalianUiState is HomePengembalianUiState.Loading -> {
