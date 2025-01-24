@@ -8,11 +8,14 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -33,6 +36,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.pam.pertemuan12.R
+import com.pam.pertemuan12.costumwidget.FooterMenu
 import com.pam.pertemuan12.customwidget.TopAppBar
 import com.pam.pertemuan12.navigation.DestinasiNavigasi
 
@@ -44,6 +48,7 @@ object DestinasiSplash : DestinasiNavigasi {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeView(
+    onHomeClick: () -> Unit,
     onAnggotaClick: () -> Unit,
     onBukuClick: () -> Unit,
     onPeminjamanClick: () -> Unit,
@@ -64,7 +69,7 @@ fun HomeView(
         Column(
             modifier = modifier
                 .fillMaxSize()
-                .background(Color(0xFFF2F2F2))
+                .background(Color(0xFFF5F5F5)) // Warna latar belakang lebih soft
         ) {
             TopAppBar(
                 title = DestinasiSplash.titleRes,
@@ -74,18 +79,73 @@ fun HomeView(
                 modifier = Modifier
             )
 
+            Spacer(modifier = Modifier.height(60.dp)) // Jarak 16.dp dari TopAppBar
+
             Column(
                 modifier = Modifier
-                    .fillMaxSize()
+                    .weight(1f)
                     .padding(16.dp),
                 horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.Center
+                verticalArrangement = Arrangement.Top
             ) {
-                AnimatedButton(text = "Anggota", imageRes = R.drawable.logoanggota, onClick = onAnggotaClick)
-                AnimatedButton(text = "Buku", imageRes = R.drawable.logobuku, onClick = onBukuClick)
-                AnimatedButton(text = "Peminjaman", imageRes = R.drawable.logotanggal, onClick = onPeminjamanClick)
-                AnimatedButton(text = "Pengembalian", imageRes = R.drawable.logotanggal, onClick = onPengembalianClick)
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .background(
+                            color = Color(0xFF6200EA),
+                            shape = RoundedCornerShape(16.dp)
+                        )
+                        .padding(16.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.Start
+                ) {
+                    Image(
+                        painter = painterResource(id = R.drawable.logoumy),
+                        contentDescription = "Logo",
+                        modifier = Modifier
+                            .size(100.dp)
+                            .padding(end = 16.dp)
+                    )
+                    Text(
+                        text = "Perpustakaan App",
+                        color = Color.White,
+                        fontSize = 24.sp,
+                        fontWeight = FontWeight.Bold
+                    )
+                }
+
+                Spacer(modifier = Modifier.height(100.dp))
+
+                Column(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.spacedBy(70.dp)
+                ) {
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.spacedBy(30.dp, Alignment.CenterHorizontally)
+                    ) {
+                        AnimatedButton(text = "Anggota", imageRes = R.drawable.logoanggota, onClick = onAnggotaClick)
+                        AnimatedButton(text = "Buku", imageRes = R.drawable.logobuku, onClick = onBukuClick)
+                    }
+
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.spacedBy(30.dp, Alignment.CenterHorizontally)
+                    ) {
+                        AnimatedButton(text = "Peminjaman", imageRes = R.drawable.logotanggal, onClick = onPeminjamanClick)
+                        AnimatedButton(text = "Pengembalian", imageRes = R.drawable.tanggalpengembalian, onClick = onPengembalianClick)
+                    }
+                }
             }
+
+            FooterMenu(
+                onHomeClick = onHomeClick, // Tambahkan navigasi yang sesuai
+                onBukuClick = onBukuClick,
+                onAnggotaClick = onAnggotaClick,
+                onPeminjamanClick = onPeminjamanClick,
+                onPengembalianClick = onPengembalianClick
+            )
         }
     }
 }
@@ -100,18 +160,18 @@ fun SplashScreen(scale: Float) {
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Image(
-            painter = painterResource(id = R.drawable.logoperpus),
+            painter = painterResource(id = R.drawable.logoumy),
             contentDescription = "Logo",
             modifier = Modifier
-                .size(120.dp)
+                .size(120.dp) // Ukuran gambar lebih besar
                 .scale(scale)
         )
         Text(
             text = "Aplikasi Perpustakaan",
             color = Color.White,
-            fontSize = 30.sp,
+            fontSize = 32.sp, // Ukuran teks lebih besar
             fontWeight = FontWeight.Bold,
-            modifier = Modifier.padding(top = 16.dp)
+            modifier = Modifier.padding(top = 50.dp)
         )
     }
 }
@@ -123,34 +183,38 @@ fun AnimatedButton(text: String, imageRes: Int, onClick: () -> Unit) {
     Button(
         onClick = onClick,
         colors = ButtonDefaults.buttonColors(
-            containerColor = Color(0xFF6200EA),
+            containerColor = Color(0xFF6200EA), // Warna ungu tua
             contentColor = Color.White
         ),
         modifier = Modifier
-            .padding(horizontal = 12.dp, vertical = 12.dp)
-            .height(90.dp)
-            .fillMaxWidth(0.9f)
+            .width(170.dp) // Lebar tombol diperbesar
+            .height(120.dp) // Tinggi tombol diperbesar
             .clickable { isPressed = !isPressed }
+            .background(
+                color = Color(0xFF6200EA),
+                shape = RoundedCornerShape(16.dp) // Sudut tombol melengkung lebih besar
+            )
     ) {
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.Start,
-            modifier = Modifier.fillMaxWidth()
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center,
+            modifier = Modifier.fillMaxSize()
         ) {
             Image(
                 painter = painterResource(id = imageRes),
                 contentDescription = null,
                 modifier = Modifier
-                    .padding(end = 8.dp)
-                    .size(50.dp)
+                    .size(70.dp) // Ukuran gambar di tombol diperbesar
+                    .padding(bottom = 12.dp) // Jarak antara gambar dan teks lebih besar
             )
             Text(
                 text = text,
-                fontSize = 20.sp,
+                fontSize = 18.sp, // Ukuran teks diperbesar
                 fontWeight = FontWeight.Bold,
                 modifier = Modifier
                     .animateScale(isPressed)
             )
+
         }
     }
 }
