@@ -29,6 +29,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.pam.pertemuan12.costumwidget.FooterMenu
 import com.pam.pertemuan12.customwidget.TopAppBar
 import com.pam.pertemuan12.model.Peminjaman
 import com.pam.pertemuan12.navigation.DestinasiNavigasi
@@ -45,6 +46,11 @@ object DestinasiPeminjamanDetail : DestinasiNavigasi {
 @Composable
 fun DetailPeminjamanView(
     id_peminjaman: String,
+    onHomeClick: () -> Unit,
+    onAnggotaClick: () -> Unit,
+    onBukuClick: () -> Unit,
+    onPeminjamanClick: () -> Unit,
+    onPengembalianClick: () -> Unit,
     navigateBack: () -> Unit,
     onClick: () -> Unit,
     viewModel: DetailPeminjamanViewModel = viewModel(factory = PenyediaPeminjamanViewModel.Factory),
@@ -76,6 +82,15 @@ fun DetailPeminjamanView(
                 Icon(imageVector = Icons.Default.Edit, contentDescription = "Edit Buku")
             }
         },
+        bottomBar = {
+            FooterMenu(
+                onAnggotaClick = onAnggotaClick,
+                onBukuClick = onBukuClick,
+                onHomeClick = onHomeClick,
+                onPeminjamanClick = onPeminjamanClick,
+                onPengembalianClick = onPengembalianClick
+            )
+        }
     ) { innerPadding ->
         when (uiState) {
             is DetailUiState.Loading -> {
