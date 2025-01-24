@@ -45,6 +45,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.pam.pertemuan12.R
+import com.pam.pertemuan12.costumwidget.FooterMenu
 import com.pam.pertemuan12.customwidget.TopAppBar
 import com.pam.pertemuan12.model.Pengembalian
 import com.pam.pertemuan12.navigation.DestinasiNavigasi
@@ -61,6 +62,11 @@ object DestinasiPengembalianHome : DestinasiNavigasi {
 @Composable
 fun HomePengembalianScreen(
     navigateToltemEntry: () -> Unit,
+    onHomeClick: () -> Unit,
+    onAnggotaClick: () -> Unit,
+    onBukuClick: () -> Unit,
+    onPeminjamanClick: () -> Unit,
+    onPengembalianClick: () -> Unit,
     modifier: Modifier = Modifier,
     navigateBack: () -> Unit,
     onDetailClick: (String) -> Unit = {},
@@ -96,6 +102,15 @@ fun HomePengembalianScreen(
                 Icon(imageVector = Icons.Default.Add, contentDescription = "Add Pengembalian")
             }
         },
+        bottomBar = {
+            FooterMenu(
+                onAnggotaClick = onAnggotaClick,
+                onBukuClick = onBukuClick,
+                onHomeClick = onHomeClick,
+                onPeminjamanClick = onPeminjamanClick,
+                onPengembalianClick = onPengembalianClick
+            )
+        }
     ) { innerPadding ->
 
         // UI elements for search, displaying pengembalian data, and handling loading/error states
