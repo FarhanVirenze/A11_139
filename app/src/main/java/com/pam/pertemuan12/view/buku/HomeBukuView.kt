@@ -50,6 +50,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.pam.pertemuan12.R
+import com.pam.pertemuan12.costumwidget.FooterMenu
 import com.pam.pertemuan12.customwidget.TopAppBar
 import com.pam.pertemuan12.model.Buku
 import com.pam.pertemuan12.navigation.DestinasiNavigasi
@@ -66,6 +67,11 @@ object DestinasiBukuHome : DestinasiNavigasi {
 @Composable
 fun HomeScreen(
     navigateToltemEntry: () -> Unit,
+    onHomeClick: () -> Unit,
+    onAnggotaClick: () -> Unit,
+    onBukuClick: () -> Unit,
+    onPeminjamanClick: () -> Unit,
+    onPengembalianClick: () -> Unit,
     modifier: Modifier = Modifier,
     navigateBack: () -> Unit,
     onDetailClick: (String) -> Unit = {},
@@ -103,6 +109,15 @@ fun HomeScreen(
                 Icon(imageVector = Icons.Default.Add, contentDescription = "Add Mahasiswa")
             }
         },
+        bottomBar = {
+            FooterMenu(
+                onAnggotaClick = onAnggotaClick,
+                onBukuClick = onBukuClick,
+                onHomeClick = onHomeClick,
+                onPeminjamanClick = onPeminjamanClick,
+                onPengembalianClick = onPengembalianClick
+            )
+        }
     ) { innerPadding ->
         Column(modifier = Modifier
             .padding(innerPadding)) {
