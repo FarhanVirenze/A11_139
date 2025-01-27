@@ -163,9 +163,11 @@ fun FormInput(
     var bukuExpanded by remember { mutableStateOf(false) }
     var selectedBuku by remember { mutableStateOf(insertUiEvent.id_buku) }
 
-    // Filter buku based on the peminjaman list
+    // Filter buku based on the peminjaman list and book status
     val availableBooks = bukuList.filter { buku ->
-        peminjamanList.any { peminjaman -> peminjaman.id_buku == buku.id_buku }
+        val peminjaman = peminjamanList.find { it.id_buku == buku.id_buku }
+        // Check if the book is available for return (book status "Tidak Tersedia" and peminjaman status "Aktif")
+        peminjaman != null && buku.status != "Tersedia" && peminjaman.status == "Aktif"
     }
 
     // State for DatePicker Dialog
