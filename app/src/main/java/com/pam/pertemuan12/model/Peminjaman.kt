@@ -9,4 +9,5 @@ data class Peminjaman(
     val id_anggota: String,
     val tanggal_peminjaman: String,
     val tanggal_pengembalian: String,
+    val status: String? = null
 )
