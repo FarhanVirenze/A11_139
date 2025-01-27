@@ -197,9 +197,11 @@ fun HomeStatus(
         is HomePeminjamanUiState.Loading -> OnLoading(modifier = modifier)
         is HomePeminjamanUiState.Success -> {
             val filteredPeminjaman = homeUiState.peminjaman.filter {
-                it.id_buku.contains(searchQuery, ignoreCase = true) ||
-                        it.id_anggota.contains(searchQuery, ignoreCase = true) ||
-                        it.tanggal_peminjaman.contains(searchQuery, ignoreCase = true)
+                it.status == "Aktif" && (
+                        it.id_buku.contains(searchQuery, ignoreCase = true) ||
+                                it.id_anggota.contains(searchQuery, ignoreCase = true) ||
+                                it.tanggal_peminjaman.contains(searchQuery, ignoreCase = true)
+                        )
             }
 
             if (filteredPeminjaman.isEmpty()) {
