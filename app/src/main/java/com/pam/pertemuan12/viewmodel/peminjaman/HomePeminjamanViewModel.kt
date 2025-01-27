@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import coil.network.HttpException
 import com.pam.pertemuan12.model.Peminjaman
+import com.pam.pertemuan12.repository.BukuRepository
 import com.pam.pertemuan12.repository.PeminjamanRepository
 import kotlinx.coroutines.launch
 import java.io.IOException
@@ -17,7 +18,10 @@ sealed class HomePeminjamanUiState {
     object Loading : HomePeminjamanUiState()
 }
 
-class HomePeminjamanViewModel(private val pjm: PeminjamanRepository) : ViewModel() {
+class HomePeminjamanViewModel(
+    private val pjm: PeminjamanRepository,
+    private val bku: BukuRepository
+) : ViewModel() {
     var pjmUiState: HomePeminjamanUiState by mutableStateOf(HomePeminjamanUiState.Loading)
         private set
 
@@ -28,12 +32,22 @@ class HomePeminjamanViewModel(private val pjm: PeminjamanRepository) : ViewModel
     fun getPjm() {
         viewModelScope.launch {
             pjmUiState = HomePeminjamanUiState.Loading
-            pjmUiState = try {
-                HomePeminjamanUiState.Success(pjm.getPeminjaman())
-            }catch (e: IOException) {
-                HomePeminjamanUiState.Error
-            }catch (e: HttpException) {
-                HomePeminjamanUiState.Error
+            try {
+                val statusBku = pjm.getPeminjaman().map { peminjaman ->
+                    val buku = bku.getBukuById(peminjaman.id_buku)
+                    peminjaman.copy(
+                        status = when (buku?.status) {
+                            "Tidak Tersedia" -> "Aktif"    // Jika buku sedang dipinjam
+                            "Tersedia" -> "Tidak Aktif"   // Jika buku tersedia
+                            else -> "Aktif"              // Default status
+                        }
+                    )
+                }
+                pjmUiState = HomePeminjamanUiState.Success(statusBku)
+            } catch (e: IOException) {
+                pjmUiState = HomePeminjamanUiState.Error
+            } catch (e: HttpException) {
+                pjmUiState = HomePeminjamanUiState.Error
             }
         }
     }
