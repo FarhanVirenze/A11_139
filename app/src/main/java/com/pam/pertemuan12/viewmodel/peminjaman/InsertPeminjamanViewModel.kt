@@ -38,8 +38,22 @@ class InsertPeminjamanViewModel(
                         // Perbarui status buku menjadi "Tidak Tersedia"
                         val updatedBuku = buku.copy(status = "Tidak Tersedia")
                         bku.updateBuku(peminjaman.id_buku, updatedBuku)
+
+                        // Update status peminjaman menjadi "Aktif"
+                        val updatedPeminjaman = peminjaman.copy(status = "Aktif")
+                        pjm.updatePeminjaman(peminjaman.id_peminjaman, updatedPeminjaman)
+
+                    } else if (buku.status == "Tidak Tersedia") {
+                        // Perbarui status buku menjadi "Tersedia"
+                        val updatedBuku = buku.copy(status = "Tersedia")
+                        bku.updateBuku(peminjaman.id_buku, updatedBuku)
+
+                        // Update status peminjaman menjadi "Tidak Aktif"
+                        val updatedPeminjaman = peminjaman.copy(status = "Tidak Aktif")
+                        pjm.updatePeminjaman(peminjaman.id_peminjaman, updatedPeminjaman)
+
                     } else {
-                        throw Exception("Buku saat ini tidak tersedia untuk dipinjam.")
+                        throw Exception("Buku memiliki status tidak valid.")
                     }
                 } else {
                     throw Exception("Buku tidak ditemukan.")
