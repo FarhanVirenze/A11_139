@@ -8,7 +8,11 @@ import com.pam.pertemuan12.BukuApplications
 
 object PenyediaPengembalianViewModel {
     val Factory = viewModelFactory {
-        initializer { HomePengembalianViewModel(aplikasiPengembalian().container.pengembalianRepository) }
+        initializer { HomePengembalianViewModel(
+            aplikasiPengembalian().container.pengembalianRepository,
+            aplikasiPengembalian().container.peminjamanRepository,
+
+            ) }
         initializer {
             InsertPengembalianViewModel(
                 pgn = aplikasiPengembalian().container.pengembalianRepository,
@@ -17,7 +21,10 @@ object PenyediaPengembalianViewModel {
                 // Inject BukuRepository
             )
         }
-        initializer { DetailPengembalianViewModel(aplikasiPengembalian().container.pengembalianRepository) }
+        initializer { DetailPengembalianViewModel(
+            aplikasiPengembalian().container.pengembalianRepository,
+            aplikasiPengembalian().container.peminjamanRepository,
+            ) }
         initializer { UpdatePengembalianViewModel(aplikasiPengembalian().container.pengembalianRepository) }
     }
 }
