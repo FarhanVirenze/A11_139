@@ -127,6 +127,9 @@ fun ItemDetailPgn(
             ComponentDetailPgn(judul = "Buku yang ingin dikembalikan", isinya = pengembalian.id_peminjaman)
             Spacer(modifier = Modifier.height(8.dp))
 
+            pengembalian.nama?.let { ComponentDetailPgn(judul = "Nama", isinya = it) }
+            Spacer(modifier = Modifier.height(8.dp))
+
             ComponentDetailPgn(judul = "Tanggal Dikembalikan", isinya = pengembalian.tanggal_dikembalikan)
             Spacer(modifier = Modifier.height(8.dp))
         }
