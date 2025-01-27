@@ -1,13 +1,18 @@
 package com.pam.pertemuan12.view.Pengembalian
 
+import android.app.DatePickerDialog
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.pam.pertemuan12.customwidget.TopAppBar
@@ -25,6 +30,7 @@ import com.pam.pertemuan12.viewmodel.peminjaman.HomePeminjamanUiState
 import com.pam.pertemuan12.viewmodel.peminjaman.HomePeminjamanViewModel
 import com.pam.pertemuan12.viewmodel.peminjaman.PenyediaPeminjamanViewModel
 import kotlinx.coroutines.launch
+import java.util.Calendar
 
 object DestinasiPengembalianInsert : DestinasiNavigasi {
     override val route = "pengembalian_insert"
@@ -157,9 +163,28 @@ fun FormInput(
     var bukuExpanded by remember { mutableStateOf(false) }
     var selectedBuku by remember { mutableStateOf(insertUiEvent.id_buku) }
 
+    // Filter buku based on the peminjaman list
     val availableBooks = bukuList.filter { buku ->
         peminjamanList.any { peminjaman -> peminjaman.id_buku == buku.id_buku }
     }
+
+    // State for DatePicker Dialog
+    val context = LocalContext.current
+    val calendar = Calendar.getInstance()
+
+    // DatePicker Dialog for Tanggal Dikembalikan
+    val datePickerDikembalikan = DatePickerDialog(
+        context,
+        { _, year, month, dayOfMonth ->
+            val formattedDate = "${dayOfMonth.toString().padStart(2, '0')}/${
+                (month + 1).toString().padStart(2, '0')
+            }/$year"
+            onValueChange(insertUiEvent.copy(tanggal_dikembalikan = formattedDate))
+        },
+        calendar.get(Calendar.YEAR),
+        calendar.get(Calendar.MONTH),
+        calendar.get(Calendar.DAY_OF_MONTH)
+    )
 
     Column(
         modifier = modifier,
@@ -176,6 +201,7 @@ fun FormInput(
             isError = insertUiEvent.id_pengembalian.isBlank()
         )
 
+        // Dropdown for Buku
         ExposedDropdownMenuBox(
             expanded = bukuExpanded,
             onExpandedChange = { bukuExpanded = !bukuExpanded }
@@ -200,14 +226,13 @@ fun FormInput(
                         onClick = {
                             selectedBuku = buku.id_buku
 
-                            // Find the corresponding peminjaman based on the selected book's ID and set the id_peminjaman
+                            // Find the corresponding peminjaman and set the id_peminjaman
                             val peminjaman = peminjamanList.find { it.id_buku == buku.id_buku }
                             onValueChange(insertUiEvent.copy(
-                                id_buku = buku.id_buku, // Set the id_buku
-                                id_peminjaman = peminjaman?.id_peminjaman.orEmpty() // Set the id_peminjaman based on the found peminjaman
+                                id_buku = buku.id_buku,
+                                id_peminjaman = peminjaman?.id_peminjaman.orEmpty()
                             ))
 
-                            // Close the dropdown menu
                             bukuExpanded = false
                         }
                     )
@@ -218,12 +243,20 @@ fun FormInput(
         // Input Tanggal Dikembalikan
         OutlinedTextField(
             value = insertUiEvent.tanggal_dikembalikan,
-            onValueChange = { onValueChange(insertUiEvent.copy(tanggal_dikembalikan = it)) },
+            onValueChange = {},
             label = { Text("Tanggal Dikembalikan") },
-            modifier = Modifier.fillMaxWidth(),
-            enabled = enabled,
+            modifier = Modifier
+                .fillMaxWidth()
+                .clickable(enabled) { datePickerDikembalikan.show() },
+            enabled = false, // Disable manual input
             singleLine = true,
+            trailingIcon = {
+                IconButton(onClick = { datePickerDikembalikan.show() }) {
+                    Icon(Icons.Default.DateRange, contentDescription = "Select Date")
+                }
+            },
             isError = insertUiEvent.tanggal_dikembalikan.isBlank()
         )
     }
 }
+
