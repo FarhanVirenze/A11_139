@@ -1,5 +1,7 @@
 package com.pam.pertemuan12.view.Pengembalian
 
+import android.app.DatePickerDialog
+import androidx.compose.foundation.clickable
 import com.pam.pertemuan12.viewmodel.Pengembalian.UpdateUiState
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -7,10 +9,14 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material3.Button
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExposedDropdownMenuBox
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
@@ -26,6 +32,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.pam.pertemuan12.customwidget.TopAppBar
@@ -38,6 +45,7 @@ import com.pam.pertemuan12.viewmodel.peminjaman.HomePeminjamanUiState
 import com.pam.pertemuan12.viewmodel.peminjaman.HomePeminjamanViewModel
 import com.pam.pertemuan12.viewmodel.peminjaman.PenyediaPeminjamanViewModel
 import kotlinx.coroutines.launch
+import java.util.Calendar
 
 object DestinasiPengembalianUpdate : DestinasiNavigasi {
     override val route = "pengembalian_update"
@@ -157,10 +165,26 @@ fun FormInput(
     var peminjamanExpanded by remember { mutableStateOf(false) }
     var selectedPeminjaman by remember { mutableStateOf(updateUiEvent.id_peminjaman) }
 
-    // Update selectedBuku dan selectedAnggota jika updateUiEvent berubah
+    // Update selectedPeminjaman if updateUiEvent changes
     LaunchedEffect(updateUiEvent) {
         selectedPeminjaman = updateUiEvent.id_peminjaman
     }
+
+    // State for DatePicker Dialog
+    val context = LocalContext.current
+    val calendar = Calendar.getInstance()
+
+    // DatePicker Dialog for Tanggal Dikembalikan
+    val datePickerDikembalikan = DatePickerDialog(
+        context,
+        { _, year, month, dayOfMonth ->
+            val formattedDate = "${dayOfMonth.toString().padStart(2, '0')}/${(month + 1).toString().padStart(2, '0')}/$year"
+            onValueChange(updateUiEvent.copy(tanggal_dikembalikan = formattedDate))
+        },
+        calendar.get(Calendar.YEAR),
+        calendar.get(Calendar.MONTH),
+        calendar.get(Calendar.DAY_OF_MONTH)
+    )
 
     Column(
         modifier = modifier,
@@ -177,7 +201,7 @@ fun FormInput(
             isError = updateUiEvent.id_pengembalian.isBlank()
         )
 
-        // Dropdown untuk Peminjaman
+        // Dropdown for Peminjaman
         ExposedDropdownMenuBox(
             expanded = peminjamanExpanded,
             onExpandedChange = { peminjamanExpanded = !peminjamanExpanded }
@@ -186,7 +210,7 @@ fun FormInput(
                 value = selectedPeminjaman,
                 onValueChange = {},
                 readOnly = true,
-                label = { Text("ID Buku yang ingin dikembalikan") },
+                label = { Text("ID Peminjaman") },
                 trailingIcon = {
                     androidx.compose.material3.ExposedDropdownMenuDefaults.TrailingIcon(expanded = peminjamanExpanded)
                 },
@@ -201,7 +225,7 @@ fun FormInput(
                         text = { Text(peminjaman.id_buku) },
                         onClick = {
                             selectedPeminjaman = peminjaman.id_peminjaman
-                            onValueChange(updateUiEvent.copy(id_peminjaman = peminjaman.id_buku))
+                            onValueChange(updateUiEvent.copy(id_peminjaman = peminjaman.id_peminjaman)) // Corrected to id_peminjaman
                             peminjamanExpanded = false
                         }
                     )
@@ -212,12 +236,20 @@ fun FormInput(
         // Input Tanggal Dikembalikan
         OutlinedTextField(
             value = updateUiEvent.tanggal_dikembalikan,
-            onValueChange = { onValueChange(updateUiEvent.copy(tanggal_dikembalikan = it)) },
+            onValueChange = {},
             label = { Text("Tanggal Dikembalikan") },
-            modifier = Modifier.fillMaxWidth(),
-            enabled = enabled,
+            modifier = Modifier
+                .fillMaxWidth()
+                .clickable(enabled) { datePickerDikembalikan.show() },
+            enabled = false, // Disable manual input
             singleLine = true,
+            trailingIcon = {
+                IconButton(onClick = { datePickerDikembalikan.show() }) {
+                    Icon(Icons.Default.DateRange, contentDescription = "Select Date")
+                }
+            },
             isError = updateUiEvent.tanggal_dikembalikan.isBlank()
         )
     }
 }
+
