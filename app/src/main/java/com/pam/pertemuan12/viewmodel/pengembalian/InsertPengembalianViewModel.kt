@@ -50,8 +50,6 @@ class InsertPengembalianViewModel(
                         val updatedBuku = buku.copy(status = "Tersedia")
                         bku.updateBuku(bukuId, updatedBuku)
 
-                        // Hapus data peminjaman setelah pengembalian buku
-                        pjm.deletePeminjaman(pengembalian.id_peminjaman) // Delete the peminjaman data using the correct peminjaman ID
                     } else {
                         throw Exception("Buku dengan ID $bukuId tidak ditemukan.")
                     }
