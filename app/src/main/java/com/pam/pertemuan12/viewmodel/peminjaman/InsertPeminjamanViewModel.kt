@@ -14,7 +14,6 @@ import kotlinx.coroutines.launch
 class InsertPeminjamanViewModel(
     private val pjm: PeminjamanRepository,
     private val bku: BukuRepository, // Repository untuk Buku
-    private val pgn: PengembalianRepository // Repository untuk Pengembalian
 ) : ViewModel() {
 
     var uiState by mutableStateOf(InsertUiState())

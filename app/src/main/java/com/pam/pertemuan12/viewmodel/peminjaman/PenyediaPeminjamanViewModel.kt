@@ -13,8 +13,7 @@ object PenyediaPeminjamanViewModel {
         initializer {
             InsertPeminjamanViewModel(
                 pjm = aplikasiPeminjaman().container.peminjamanRepository,
-                bku = aplikasiPeminjaman().container.bukuRepository,
-                pgn = aplikasiPeminjaman().container.pengembalianRepository
+                bku = aplikasiPeminjaman().container.bukuRepository
             )
         }
         initializer { UpdatePeminjamanViewModel(aplikasiPeminjaman().container.peminjamanRepository) }

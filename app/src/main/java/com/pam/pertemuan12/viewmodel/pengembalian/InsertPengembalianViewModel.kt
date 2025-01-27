@@ -7,7 +7,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.pam.pertemuan12.model.Peminjaman
 import com.pam.pertemuan12.repository.BukuRepository
 import com.pam.pertemuan12.repository.PeminjamanRepository
 import kotlinx.coroutines.launch
