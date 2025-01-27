@@ -46,12 +46,6 @@ class InsertPeminjamanViewModel(
                     throw Exception("Buku tidak ditemukan.")
                 }
 
-                // Hapus data pengembalian terkait, jika ada
-                val pengembalian = pgn.getPengembalianById(peminjaman.id_peminjaman)
-                pengembalian?.let {
-                    pgn.deletePengembalian(it.id_pengembalian)
-                }
-
                 // Reset UI state setelah operasi berhasil
                 uiState = InsertUiState()
             } catch (e: Exception) {
