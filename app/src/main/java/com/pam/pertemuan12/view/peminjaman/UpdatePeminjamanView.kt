@@ -1,15 +1,21 @@
 package com.pam.pertemuan12.view.peminjaman
 
+import android.app.DatePickerDialog
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material3.Button
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExposedDropdownMenuBox
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
@@ -25,6 +31,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.pam.pertemuan12.customwidget.TopAppBar
@@ -42,6 +49,7 @@ import com.pam.pertemuan12.viewmodel.peminjaman.UpdateUiState
 import com.pam.pertemuan12.viewmodel.peminjaman.PenyediaPeminjamanViewModel
 import com.pam.pertemuan12.viewmodel.peminjaman.UpdatePeminjamanViewModel
 import kotlinx.coroutines.launch
+import java.util.Calendar
 
 object DestinasiPeminjamanUpdate : DestinasiNavigasi {
     override val route = "peminjaman_update"
@@ -173,6 +181,34 @@ fun FormInput(
     // Filter the bukuList to include only books that are "Tersedia"
     val availableBooks = bukuList.filter { it.status == "Tersedia" }
 
+    // State for DatePicker dialogs
+    val context = LocalContext.current
+    val calendar = Calendar.getInstance()
+
+    // Dialog for Tanggal Peminjaman
+    val datePickerPeminjaman = DatePickerDialog(
+        context,
+        { _, year, month, dayOfMonth ->
+            val formattedDate = "${dayOfMonth.toString().padStart(2, '0')}/${(month + 1).toString().padStart(2, '0')}/$year"
+            onValueChange(updateUiEvent.copy(tanggal_peminjaman = formattedDate))
+        },
+        calendar.get(Calendar.YEAR),
+        calendar.get(Calendar.MONTH),
+        calendar.get(Calendar.DAY_OF_MONTH)
+    )
+
+    // Dialog for Tanggal Pengembalian
+    val datePickerPengembalian = DatePickerDialog(
+        context,
+        { _, year, month, dayOfMonth ->
+            val formattedDate = "${dayOfMonth.toString().padStart(2, '0')}/${(month + 1).toString().padStart(2, '0')}/$year"
+            onValueChange(updateUiEvent.copy(tanggal_pengembalian = formattedDate))
+        },
+        calendar.get(Calendar.YEAR),
+        calendar.get(Calendar.MONTH),
+        calendar.get(Calendar.DAY_OF_MONTH)
+    )
+
     // Update selectedBuku dan selectedAnggota jika updateUiEvent berubah
     LaunchedEffect(updateUiEvent) {
         selectedBuku = updateUiEvent.id_buku
@@ -261,24 +297,39 @@ fun FormInput(
         // Input Tanggal Peminjaman
         OutlinedTextField(
             value = updateUiEvent.tanggal_peminjaman,
-            onValueChange = { onValueChange(updateUiEvent.copy(tanggal_peminjaman = it)) },
+            onValueChange = {},
             label = { Text("Tanggal Peminjaman") },
-            modifier = Modifier.fillMaxWidth(),
-            enabled = enabled,
+            modifier = Modifier
+                .fillMaxWidth()
+                .clickable(enabled) { datePickerPeminjaman.show() },
+            enabled = false, // Disable manual input
             singleLine = true,
+            trailingIcon = {
+                IconButton(onClick = { datePickerPeminjaman.show() }) {
+                    Icon(Icons.Default.DateRange, contentDescription = "Select Date")
+                }
+            },
             isError = updateUiEvent.tanggal_peminjaman.isBlank()
         )
 
         // Input Tanggal Pengembalian
         OutlinedTextField(
             value = updateUiEvent.tanggal_pengembalian,
-            onValueChange = { onValueChange(updateUiEvent.copy(tanggal_pengembalian = it)) },
+            onValueChange = {},
             label = { Text("Tanggal Pengembalian") },
-            modifier = Modifier.fillMaxWidth(),
-            enabled = enabled,
+            modifier = Modifier
+                .fillMaxWidth()
+                .clickable(enabled) { datePickerPengembalian.show() },
+            enabled = false, // Disable manual input
             singleLine = true,
+            trailingIcon = {
+                IconButton(onClick = { datePickerPengembalian.show() }) {
+                    Icon(Icons.Default.DateRange, contentDescription = "Select Date")
+                }
+            },
             isError = updateUiEvent.tanggal_pengembalian.isBlank()
         )
     }
 }
+
 
