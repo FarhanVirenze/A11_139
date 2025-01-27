@@ -361,6 +361,20 @@ fun PjmCard(
                     modifier = Modifier.weight(1f)
                 )
             }
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Icon(imageVector = Icons.Filled.Info, contentDescription = "statusBku")
+                Spacer(modifier = Modifier.width(4.dp))
+                peminjaman.status?.let { status ->
+                    Text(
+                        text = status,
+                        style = MaterialTheme.typography.bodyMedium,
+                        modifier = Modifier.weight(1f)
+                    )
+                }
+            }
         }
     }
 }
