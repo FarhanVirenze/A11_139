@@ -8,8 +8,14 @@ import com.pam.pertemuan12.BukuApplications
 
 object PenyediaPeminjamanViewModel {
     val Factory = viewModelFactory {
-        initializer { HomePeminjamanViewModel(aplikasiPeminjaman().container.peminjamanRepository) }
-        initializer { DetailPeminjamanViewModel(aplikasiPeminjaman().container.peminjamanRepository) }
+        initializer { HomePeminjamanViewModel(
+            aplikasiPeminjaman().container.peminjamanRepository,
+            aplikasiPeminjaman().container.bukuRepository
+            ) }
+        initializer { DetailPeminjamanViewModel(
+            aplikasiPeminjaman().container.peminjamanRepository,
+            aplikasiPeminjaman().container.bukuRepository
+            ) }
         initializer {
             InsertPeminjamanViewModel(
                 pjm = aplikasiPeminjaman().container.peminjamanRepository,
