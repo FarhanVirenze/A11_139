@@ -57,7 +57,6 @@ fun InsertPeminjamanScreen(
     viewModel: InsertPeminjamanViewModel = viewModel(factory = PenyediaPeminjamanViewModel.Factory),
     viewModelBku: HomeBukuViewModel = viewModel(factory = PenyediaBukuViewModel.Factory),
     viewModelAgo: HomeAnggotaViewModel = viewModel(factory = PenyediaAnggotaViewModel.Factory),
-    viewModelPgn: HomePengembalianViewModel = viewModel(factory = PenyediaPengembalianViewModel.Factory)
 ) {
     val coroutineScope = rememberCoroutineScope()
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
@@ -65,7 +64,6 @@ fun InsertPeminjamanScreen(
     // Mengambil UI State
     val bukuUiState = viewModelBku.bkuUiState
     val anggotaUiState = viewModelAgo.agoUiState
-    val pengembalianUiState = viewModelPgn.pgnUiState
 
     Scaffold(
         modifier = modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
@@ -79,7 +77,7 @@ fun InsertPeminjamanScreen(
         }
     ) { innerPadding ->
         when {
-            bukuUiState is HomeUiState.Loading || anggotaUiState is HomeAnggotaUiState.Loading || pengembalianUiState is HomePengembalianUiState.Loading -> {
+            bukuUiState is HomeUiState.Loading || anggotaUiState is HomeAnggotaUiState.Loading -> {
                 Text(
                     text = "Memuat data...",
                     modifier = Modifier
@@ -87,7 +85,7 @@ fun InsertPeminjamanScreen(
                         .fillMaxWidth()
                 )
             }
-            bukuUiState is HomeUiState.Error || anggotaUiState is HomeAnggotaUiState.Error || pengembalianUiState is HomePengembalianUiState.Error -> {
+            bukuUiState is HomeUiState.Error || anggotaUiState is HomeAnggotaUiState.Error -> {
                 Text(
                     text = "Gagal memuat data.",
                     color = Color.Red,
@@ -96,12 +94,11 @@ fun InsertPeminjamanScreen(
                         .fillMaxWidth()
                 )
             }
-            bukuUiState is HomeUiState.Success && anggotaUiState is HomeAnggotaUiState.Success && pengembalianUiState is HomePengembalianUiState.Success -> {
+            bukuUiState is HomeUiState.Success && anggotaUiState is HomeAnggotaUiState.Success -> {
                 EntryBody(
                     insertUiState = viewModel.uiState,
                     bukuList = bukuUiState.buku,
                     anggotaList = anggotaUiState.anggota,
-                    pengembalianList = pengembalianUiState.pengembalian,
                     onBukuValueChange = viewModel::updateInsertPjmState,
                     onSaveClick = {
                         coroutineScope.launch {
@@ -110,7 +107,6 @@ fun InsertPeminjamanScreen(
                                 viewModel.insertPjm()
 
                                 // Refresh data buku dan peminjaman
-                                viewModelPgn.getPgn()
                                 viewModelBku.getBku()
 
                                 // Navigasi kembali
@@ -137,7 +133,6 @@ fun EntryBody(
     insertUiState: InsertPeminjamanViewModel.InsertUiState,
     bukuList: List<Buku>,
     anggotaList: List<Anggota>,
-    pengembalianList: List<Pengembalian>,
     onBukuValueChange: (InsertPeminjamanViewModel.InsertUiEvent) -> Unit,
     onSaveClick: () -> Unit,
     isSaveEnabled: Boolean,
@@ -151,7 +146,6 @@ fun EntryBody(
             insertUiEvent = insertUiState.insertUiEvent,
             bukuList = bukuList,
             anggotaList = anggotaList,
-            pengembalianList = pengembalianList,
             onValueChange = onBukuValueChange,
             modifier = Modifier.fillMaxWidth()
         )
@@ -172,7 +166,6 @@ fun FormInput(
     insertUiEvent: InsertPeminjamanViewModel.InsertUiEvent,
     bukuList: List<Buku>,
     anggotaList: List<Anggota>,
-    pengembalianList: List<Pengembalian>,
     modifier: Modifier = Modifier,
     onValueChange: (InsertPeminjamanViewModel.InsertUiEvent) -> Unit = {},
     enabled: Boolean = true
