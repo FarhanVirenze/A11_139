@@ -149,6 +149,9 @@ fun ItemDetailPjm(
 
             ComponentDetailPjm(judul = "Tanggal Pengembalian", isinya = peminjaman.tanggal_pengembalian)
             Spacer(modifier = Modifier.height(8.dp))
+
+            peminjaman.status?.let { ComponentDetailPjm(judul = "Status", isinya = it) }
+            Spacer(modifier = Modifier.height(8.dp))
         }
     }
 }
