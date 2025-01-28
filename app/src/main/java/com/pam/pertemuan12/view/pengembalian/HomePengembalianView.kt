@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
@@ -283,14 +284,15 @@ fun PgnCard(
     ) {
         Column(
             modifier = Modifier.padding(6.dp),
-            verticalArrangement = Arrangement.spacedBy(6.dp)
+            verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
+            // Header Section: ID Pengembalian and Delete Button
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Icon(imageVector = Icons.Filled.Person, contentDescription = "")
-                Spacer(modifier = Modifier.padding(4.dp))
+                Spacer(modifier = Modifier.width(8.dp))
                 Text(
                     text = pengembalian.id_pengembalian,
                     style = MaterialTheme.typography.titleLarge,
@@ -304,79 +306,71 @@ fun PgnCard(
                     )
                 }
             }
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
+
+            // ID Peminjaman
+            Row(modifier = Modifier.fillMaxWidth()) {
                 Icon(imageVector = Icons.Filled.AccountCircle, contentDescription = "ID Peminjaman")
-                Spacer(modifier = Modifier.padding(4.dp))
+                Spacer(modifier = Modifier.width(8.dp))
                 Text(
                     text = pengembalian.id_peminjaman,
                     style = MaterialTheme.typography.bodyMedium,
                     modifier = Modifier.weight(1f)
                 )
             }
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
+
+            // Nama Anggota
+            Row(modifier = Modifier.fillMaxWidth()) {
                 Icon(imageVector = Icons.Filled.Face, contentDescription = "Nama")
-                Spacer(modifier = Modifier.padding(4.dp))
-                pengembalian.nama?.let {
-                    Text(
-                        text = it,
-                        style = MaterialTheme.typography.bodyMedium,
-                        modifier = Modifier.weight(1f)
-                    )
-                }
-            }
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Icon(imageVector = Icons.Filled.DateRange, contentDescription = "Tanggal Dikembalikan")
-                Spacer(modifier = Modifier.padding(4.dp))
-                pengembalian.tanggal_peminjaman?.let {
-                    Text(
-                        text = it,
-                        style = MaterialTheme.typography.bodyMedium,
-                        modifier = Modifier.weight(1f)
-                    )
-                }
-            }
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Icon(imageVector = Icons.Filled.DateRange, contentDescription = "Tanggal Dikembalikan")
-                Spacer(modifier = Modifier.padding(4.dp))
-                pengembalian.tanggal_pengembalian?.let {
-                    Text(
-                        text = it,
-                        style = MaterialTheme.typography.bodyMedium,
-                        modifier = Modifier.weight(1f)
-                    )
-                }
-            }
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Icon(imageVector = Icons.Filled.DateRange, contentDescription = "Tanggal Dikembalikan")
-                Spacer(modifier = Modifier.padding(4.dp))
+                Spacer(modifier = Modifier.width(8.dp))
                 Text(
-                    text = pengembalian.tanggal_dikembalikan,
+                    text = pengembalian.nama ?: "Nama tidak tersedia",
                     style = MaterialTheme.typography.bodyMedium,
                     modifier = Modifier.weight(1f)
                 )
             }
+
+            // Tanggal Peminjaman
+            pengembalian.tanggal_peminjaman?.let {
+                Row(modifier = Modifier.fillMaxWidth()) {
+                    Icon(imageVector = Icons.Filled.DateRange, contentDescription = "Tanggal Peminjaman")
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Text(
+                        text = it,
+                        style = MaterialTheme.typography.bodyMedium,
+                        modifier = Modifier.weight(1f)
+                    )
+                }
+            }
+
+            // Tanggal Pengembalian
+            pengembalian.tanggal_pengembalian?.let {
+                Row(modifier = Modifier.fillMaxWidth()) {
+                    Icon(imageVector = Icons.Filled.DateRange, contentDescription = "Tanggal Pengembalian")
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Text(
+                        text = it,
+                        style = MaterialTheme.typography.bodyMedium,
+                        modifier = Modifier.weight(1f)
+                    )
+                }
+            }
+
+            // Tanggal Dikembalikan
+            Row(modifier = Modifier.fillMaxWidth()) {
+                Icon(imageVector = Icons.Filled.DateRange, contentDescription = "Tanggal Dikembalikan")
+                Spacer(modifier = Modifier.width(8.dp))
+                Text(
+                    text = pengembalian.tanggal_dikembalikan ?: "Tanggal tidak tersedia",
+                    style = MaterialTheme.typography.bodyMedium,
+                    modifier = Modifier.weight(1f)
+                )
+            }
+
+            // Denda (jika ada)
             pengembalian.denda?.let { denda ->
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
+                Row(modifier = Modifier.fillMaxWidth()) {
                     Icon(imageVector = Icons.Filled.Info, contentDescription = "Denda")
-                    Spacer(modifier = Modifier.padding(4.dp))
+                    Spacer(modifier = Modifier.width(8.dp))
                     Text(
                         text = "Denda: $denda",
                         style = MaterialTheme.typography.bodyMedium,
