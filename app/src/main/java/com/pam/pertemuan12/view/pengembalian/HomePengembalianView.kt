@@ -20,6 +20,7 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Face
+import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
@@ -298,7 +299,7 @@ fun PgnCard(
                 modifier = Modifier.fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Icon(imageVector = Icons.Filled.AccountCircle, contentDescription = "ID_BUKU")
+                Icon(imageVector = Icons.Filled.AccountCircle, contentDescription = "ID Peminjaman")
                 Spacer(modifier = Modifier.padding(4.dp))
                 Text(
                     text = pengembalian.id_peminjaman,
@@ -310,7 +311,7 @@ fun PgnCard(
                 modifier = Modifier.fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Icon(imageVector = Icons.Filled.Face, contentDescription = "tanggal_dikembalikan")
+                Icon(imageVector = Icons.Filled.Face, contentDescription = "Nama")
                 Spacer(modifier = Modifier.padding(4.dp))
                 pengembalian.nama?.let {
                     Text(
@@ -324,13 +325,56 @@ fun PgnCard(
                 modifier = Modifier.fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Icon(imageVector = Icons.Filled.DateRange, contentDescription = "tanggal_dikembalikan")
+                Icon(imageVector = Icons.Filled.DateRange, contentDescription = "Tanggal Dikembalikan")
+                Spacer(modifier = Modifier.padding(4.dp))
+                pengembalian.tanggal_peminjaman?.let {
+                    Text(
+                        text = it,
+                        style = MaterialTheme.typography.bodyMedium,
+                        modifier = Modifier.weight(1f)
+                    )
+                }
+            }
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Icon(imageVector = Icons.Filled.DateRange, contentDescription = "Tanggal Dikembalikan")
+                Spacer(modifier = Modifier.padding(4.dp))
+                pengembalian.tanggal_pengembalian?.let {
+                    Text(
+                        text = it,
+                        style = MaterialTheme.typography.bodyMedium,
+                        modifier = Modifier.weight(1f)
+                    )
+                }
+            }
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Icon(imageVector = Icons.Filled.DateRange, contentDescription = "Tanggal Dikembalikan")
                 Spacer(modifier = Modifier.padding(4.dp))
                 Text(
                     text = pengembalian.tanggal_dikembalikan,
                     style = MaterialTheme.typography.bodyMedium,
                     modifier = Modifier.weight(1f)
                 )
+            }
+            pengembalian.denda?.let { denda ->
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Icon(imageVector = Icons.Filled.Info, contentDescription = "Denda")
+                    Spacer(modifier = Modifier.padding(4.dp))
+                    Text(
+                        text = "Denda: $denda",
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.error,
+                        modifier = Modifier.weight(1f)
+                    )
+                }
             }
         }
     }
