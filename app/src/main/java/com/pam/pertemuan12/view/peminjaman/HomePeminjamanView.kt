@@ -145,7 +145,7 @@ fun HomePeminjamanScreen(
             AlertDialog(
                 onDismissRequest = { showDialog.value = false },
                 title = { Text("Konfirmasi Hapus") },
-                text = { Text("Apakah Anda yakin ingin menghapus buku ini?") },
+                text = { Text("Apakah Anda yakin ingin menghapus peminjaman ini?") },
                 confirmButton = {
                     Button(onClick = {
                         peminjamanToDelete.value?.let { pjm ->
