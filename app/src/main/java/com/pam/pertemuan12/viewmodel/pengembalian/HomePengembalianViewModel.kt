@@ -37,69 +37,52 @@ class HomePengembalianViewModel(
     fun getPgn() {
         viewModelScope.launch {
             pgnUiState = HomePengembalianUiState.Loading
-            pgnUiState = try {
+            try {
+                // Fetch the pengembalian list
                 val pengembalianList = pgn.getPengembalian()
 
-                val pengembalianWithDetails = pengembalianList.map { pengembalian ->
-                    try {
-                        Log.d("HomePengembalianViewModel", "Fetching Anggota for Pengembalian ID: ${pengembalian.id_peminjaman}")
+                // Fetch the peminjaman data
+                val peminjamanList = pjm.getPeminjaman()
 
-                        // Fetch peminjaman based on ID
-                        val peminjaman = pjm.getPeminjamanById(pengembalian.id_peminjaman)
-                        Log.d("HomePengembalianViewModel", "Successfully fetched: ${peminjaman.id_anggota}")
+                // Map over pengembalian to get the corresponding peminjaman data and calculate denda
+                val resultList = pengembalianList.map { pengembalian ->
+                    val peminjaman = peminjamanList.find { it.id_peminjaman == pengembalian.id_peminjaman }
+                    val nama = peminjaman?.id_anggota
+                    val tanggalPeminjaman = peminjaman?.tanggal_peminjaman
+                    val tanggalPengembalian = peminjaman?.tanggal_pengembalian
 
-                        // Format tanggal_pengembalian from peminjaman to dd/MM/yyyy if needed
-                        val formattedTanggalPengembalian = try {
-                            val inputFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()) // Format from API
-                            val outputFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()) // Desired format
-                            outputFormat.format(inputFormat.parse(peminjaman.tanggal_pengembalian))
-                        } catch (e: ParseException) {
-                            Log.e("getPgn", "Error formatting tanggal_pengembalian: ${e.message}")
-                            peminjaman.tanggal_pengembalian // Use original format if failed
-                        }
-
-                        // Format tanggal_peminjaman from peminjaman to dd/MM/yyyy if needed
-                        val formattedTanggalPeminjaman = try {
-                            val inputFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()) // Format from API
-                            val outputFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()) // Desired format
-                            outputFormat.format(inputFormat.parse(peminjaman.tanggal_peminjaman))
-                        } catch (e: ParseException) {
-                            Log.e("getPgn", "Error formatting tanggal_peminjaman: ${e.message}")
-                            peminjaman.tanggal_peminjaman // Use original format if failed
-                        }
-
-                        // Calculate the penalty (denda) if tanggal_dikembalikan is after tanggal_pengembalian
-                        val denda = calculateDenda(formattedTanggalPengembalian, pengembalian.tanggal_dikembalikan)
-
-                        // Return pengembalian with nama, tanggal_peminjaman, tanggal_pengembalian, and denda
-                        pengembalian.copy(
-                            nama = peminjaman.id_anggota,
-                            tanggal_peminjaman = formattedTanggalPeminjaman,
-                            tanggal_pengembalian = formattedTanggalPengembalian,
-                            denda = denda
-                        )
-                    } catch (e: Exception) {
-                        Log.e("HomePengembalianViewModel", "Error fetching Anggota: ${e.message}")
-                        pengembalian.copy(nama = "Error", denda = null, tanggal_peminjaman = "Error", tanggal_pengembalian = "Error")
+                    val denda = if (!tanggalPengembalian.isNullOrEmpty() && !pengembalian.tanggal_dikembalikan.isNullOrEmpty()) {
+                        calculateDenda(tanggalPengembalian, pengembalian.tanggal_dikembalikan)
+                    } else {
+                        null
                     }
+
+                    pengembalian.copy(
+                        nama = nama,
+                        tanggal_peminjaman = tanggalPeminjaman,
+                        tanggal_pengembalian = tanggalPengembalian,
+                        denda = denda
+                    )
                 }
 
-                HomePengembalianUiState.Success(pengembalianWithDetails)
-            } catch (e: Exception) {
-                Log.e("HomePengembalianViewModel", "Error in fetching pengembalian: ${e.message}")
-                HomePengembalianUiState.Error
+                pgnUiState = HomePengembalianUiState.Success(resultList)
+            } catch (e: IOException) {
+                pgnUiState = HomePengembalianUiState.Error
+            } catch (e: HttpException) {
+                pgnUiState = HomePengembalianUiState.Error
             }
         }
     }
 
     fun calculateDenda(tanggalPengembalian: String, tanggalDikembalikan: String): String? {
-        val format = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()) // Use the dd/MM/yyyy format
+        val format = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()) // Ensure the correct format
 
         return try {
             val datePengembalian = format.parse(tanggalPengembalian)
             val dateDikembalikan = format.parse(tanggalDikembalikan)
 
             if (dateDikembalikan != null && datePengembalian != null) {
+                // Ensure tanggal_dikembalikan is after tanggal_pengembalian
                 if (dateDikembalikan.after(datePengembalian)) {
                     val diff = dateDikembalikan.time - datePengembalian.time
                     val daysLate = TimeUnit.MILLISECONDS.toDays(diff).toInt()
