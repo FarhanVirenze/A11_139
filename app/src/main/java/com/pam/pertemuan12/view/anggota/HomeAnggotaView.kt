@@ -210,12 +210,12 @@ fun AnggotaCard(
     onDeleteClick: (Anggota) -> Unit = {}
 ) {
     Card(
-        modifier = modifier.fillMaxWidth().padding(8.dp),
+        modifier = modifier.fillMaxWidth().padding(2.dp),
         shape = MaterialTheme.shapes.medium,
         elevation = CardDefaults.cardElevation(defaultElevation = 8.dp)
     ) {
         Column(
-            modifier = Modifier.padding(16.dp),
+            modifier = Modifier.padding(6.dp),
             verticalArrangement = Arrangement.spacedBy(6.dp)
         ) {
             Row(
