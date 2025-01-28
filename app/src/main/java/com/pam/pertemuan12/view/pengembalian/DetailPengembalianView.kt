@@ -130,8 +130,22 @@ fun ItemDetailPgn(
             pengembalian.nama?.let { ComponentDetailPgn(judul = "Nama", isinya = it) }
             Spacer(modifier = Modifier.height(8.dp))
 
+            pengembalian.tanggal_peminjaman?.let {
+                ComponentDetailPgn(judul = "Tanggal Peminjaman", isinya = it)
+            }
+            Spacer(modifier = Modifier.height(8.dp))
+
+            pengembalian.tanggal_pengembalian?.let {
+                ComponentDetailPgn(judul = "Tanggal Pengembalian", isinya = it)
+            }
+            Spacer(modifier = Modifier.height(8.dp))
+
             ComponentDetailPgn(judul = "Tanggal Dikembalikan", isinya = pengembalian.tanggal_dikembalikan)
             Spacer(modifier = Modifier.height(8.dp))
+
+            pengembalian.denda?.let {
+                ComponentDetailPgn(judul = "Denda", isinya = it)
+            }
         }
     }
 }
