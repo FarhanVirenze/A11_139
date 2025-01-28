@@ -77,9 +77,9 @@
 
 #### DeletePengembalianDialog, DendaHome, dan DendaDetail, FilterSearchPengembalian
 <center>
-<img src="https://github.com/user-attachments/assets/2c24d2a0-cbdf-4e2d-a270-99c0012344bc" alt="DeletePengembalianDialog">
+<img src="https://github.com/user-attachments/assets/f7eec124-279e-4f62-b2f3-782c77294680" alt="DeletePengembalianDialog">
 <img src="https://github.com/user-attachments/assets/e0351148-0128-4dbf-932a-c075ccf06747" alt="DendaHome">
-<img src="https://github.com/user-attachments/assets/4a41ee8f-6ee7-47e1-8c1f-f2c286d38292" alt="DendaDetail">
+<img src="https://github.com/user-attachments/assets/37349065-afeb-4de4-bf96-7494190e7dd2" alt="DendaDetail">
 <img src="https://github.com/user-attachments/assets/94fd0840-3ae9-4069-bbc5-cc58a3843dbb" alt="FilterSearchPengembalian">
 </center>
 
