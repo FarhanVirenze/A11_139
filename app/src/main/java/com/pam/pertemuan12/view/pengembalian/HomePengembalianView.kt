@@ -120,6 +120,15 @@ fun HomePengembalianScreen(
                 query = searchQuery.value,
                 onQueryChange = { searchQuery.value = it }
             )
+
+            Text(
+                text = "Note : Denda Rp. 1.000 per hari jika tanggal dikembalikan lewat dari tanggal pengembalian yang telah ditentukan",
+                style = MaterialTheme.typography.bodySmall,
+                modifier = Modifier
+                    .padding(horizontal = 16.dp, vertical = 8.dp)
+                    .fillMaxWidth()
+            )
+
             HomeStatus(
                 homeUiState = homeUiState,
                 searchQuery = searchQuery.value,
@@ -268,12 +277,12 @@ fun PgnCard(
     onDeleteClick: (Pengembalian) -> Unit = {}
 ) {
     Card(
-        modifier = modifier.fillMaxWidth().padding(8.dp),
+        modifier = modifier.fillMaxWidth().padding(2.dp),
         shape = MaterialTheme.shapes.medium,
         elevation = CardDefaults.cardElevation(defaultElevation = 8.dp)
     ) {
         Column(
-            modifier = Modifier.padding(16.dp),
+            modifier = Modifier.padding(6.dp),
             verticalArrangement = Arrangement.spacedBy(6.dp)
         ) {
             Row(
