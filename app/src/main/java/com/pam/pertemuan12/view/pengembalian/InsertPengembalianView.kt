@@ -20,8 +20,6 @@ import com.pam.pertemuan12.model.Buku
 import com.pam.pertemuan12.model.Peminjaman
 import com.pam.pertemuan12.navigation.DestinasiNavigasi
 import com.pam.pertemuan12.viewmodel.Pengembalian.InsertPengembalianViewModel
-import com.pam.pertemuan12.viewmodel.Pengembalian.InsertUiEvent
-import com.pam.pertemuan12.viewmodel.Pengembalian.InsertUiState
 import com.pam.pertemuan12.viewmodel.Pengembalian.PenyediaPengembalianViewModel
 import com.pam.pertemuan12.viewmodel.buku.HomeUiState
 import com.pam.pertemuan12.viewmodel.buku.HomeBukuViewModel
@@ -99,6 +97,7 @@ fun InsertPengembalianScreen(
                                 viewModelPjm.getPjm()
                                 viewModelBku.getBku()
 
+
                                 navigateBack()
 
                             } catch (e: Exception) {
@@ -120,10 +119,10 @@ fun InsertPengembalianScreen(
 
 @Composable
 fun EntryBody(
-    insertUiState: InsertUiState,
+    insertUiState: InsertPengembalianViewModel.InsertUiState,
     bukuList: List<Buku>,
     peminjamanList: List<Peminjaman>,
-    onPeminjamanValueChange: (InsertUiEvent) -> Unit,
+    onPeminjamanValueChange: (InsertPengembalianViewModel.InsertUiEvent) -> Unit,
     onSaveClick: () -> Unit,
     isSaveEnabled: Boolean,
     modifier: Modifier = Modifier
@@ -153,11 +152,11 @@ fun EntryBody(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun FormInput(
-    insertUiEvent: InsertUiEvent,
+    insertUiEvent: InsertPengembalianViewModel.InsertUiEvent,
     bukuList: List<Buku>,
     peminjamanList: List<Peminjaman>,
     modifier: Modifier = Modifier,
-    onValueChange: (InsertUiEvent) -> Unit = {},
+    onValueChange: (InsertPengembalianViewModel.InsertUiEvent) -> Unit = {},
     enabled: Boolean = true
 ) {
     var bukuExpanded by remember { mutableStateOf(false) }
