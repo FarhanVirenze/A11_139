@@ -9,6 +9,13 @@
 
 ---
 
+### Tampilan HomeScreen
+<center>
+<img src="https://github.com/user-attachments/assets/f2aa7166-815e-472f-b240-e72fb3c03182" alt="HomeScreen">
+</center>
+
+---
+
 ### Tampilan Anggota
 #### HomeAnggota, DetailAnggota, InsertAnggota, dan UpdateAnggota
 <center>
